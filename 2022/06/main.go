@@ -7,14 +7,13 @@ import (
 )
 
 func main() {
-	part1()
-	part2()
+	findFirstMarker("Part 1 Marker:", 4)
+	findFirstMarker("Part 2 Marker:", 14)
 }
 
-func part1() {
+func findFirstMarker(title string, markerLength int) {
 	file := aoc_common.OpenFile("06/input")
 	defer file.Close()
-	const MarkerLength = 4
 	markerWindow := make(map[rune]int)
 
 	fileScanner := bufio.NewScanner(file)
@@ -23,7 +22,7 @@ func part1() {
 		dataStream := []rune(line)
 
 		for i := 0; i < len(dataStream); i++ {
-			for j := 0; j < MarkerLength; j++ {
+			for j := 0; j < markerLength; j++ {
 				if _, ok := markerWindow[dataStream[i+j]]; !ok {
 					//If not in window add it
 					markerWindow[dataStream[i+j]] = i
@@ -32,37 +31,8 @@ func part1() {
 					break
 				}
 			}
-			if len(markerWindow) == MarkerLength {
-				fmt.Println("Part 1 marker found:", i+MarkerLength)
-				break
-			}
-		}
-	}
-}
-
-func part2() {
-	file := aoc_common.OpenFile("06/input")
-	defer file.Close()
-	const MarkerLength = 14
-	markerWindow := make(map[rune]int)
-
-	fileScanner := bufio.NewScanner(file)
-	for fileScanner.Scan() {
-		line := fileScanner.Text()
-		dataStream := []rune(line)
-
-		for i := 0; i < len(dataStream); i++ {
-			for j := 0; j < MarkerLength; j++ {
-				if _, ok := markerWindow[dataStream[i+j]]; !ok {
-					//If not in window add it
-					markerWindow[dataStream[i+j]] = i
-				} else {
-					markerWindow = make(map[rune]int)
-					break
-				}
-			}
-			if len(markerWindow) == MarkerLength {
-				fmt.Println("Part 2 marker found:", i+MarkerLength)
+			if len(markerWindow) == markerLength {
+				fmt.Println(title, i+markerLength)
 				break
 			}
 		}
